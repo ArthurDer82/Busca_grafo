@@ -3,53 +3,41 @@
 
 typedef struct grafo Grafo;
 
-Grafo* cria_Grafo(int nro_vertices, int grau_max);
-void libera_Grafo(Grafo* gr);
-int insereAresta(Grafo* gr, int orig, int dest);
+Grafo* cria_Grafo(int Vertices, int grau_max);
+int AddAresta(Grafo* gr, int orig, int dest);
 void menorCaminho_Grafo(Grafo *gr, int ini, int *antecessor, float *distancia);
 
 void imprime_Grafo(Grafo *gr);
 
 struct grafo{
-    int nro_vertices;
+    int Vertices;
     int grau_max;
     int** arestas;
     int* grau;
 };
 
-Grafo* cria_Grafo(int nro_vertices, int grau_max){
+Grafo* cria_Grafo(int Vertices, int grau_max){
     Grafo *gr;
     gr = (Grafo*) malloc(sizeof(struct grafo));
     if(gr != NULL){
         int i;
-        gr->nro_vertices = nro_vertices;
+        gr->Vertices = Vertices;
         gr->grau_max = grau_max;
-        gr->grau = (int*) calloc(nro_vertices,sizeof(int));
+        gr->grau = (int*) calloc(Vertices,sizeof(int));
 
-        gr->arestas = (int**) malloc(nro_vertices * sizeof(int*));
-        for(i=0; i<nro_vertices; i++)
+        gr->arestas = (int**) malloc(Vertices * sizeof(int*));
+        for(i=0; i<Vertices; i++)
             gr->arestas[i] = (int*) malloc(grau_max * sizeof(int));
     }
     return gr;
 }
 
-void libera_Grafo(Grafo* gr){
-    if(gr != NULL){
-        int i;
-        for(i=0; i<gr->nro_vertices; i++)
-            free(gr->arestas[i]);
-        free(gr->arestas);
-        free(gr->grau);
-        free(gr);
-    }
-}
-
-int insereAresta(Grafo* gr, int orig, int dest){
+int AddAresta(Grafo* gr, int orig, int dest){
     if(gr == NULL)
         return 0;
-    if(orig < 0 || orig >= gr->nro_vertices)
+    if(orig < 0 || orig >= gr->Vertices)
         return 0;
-    if(dest < 0 || dest >= gr->nro_vertices)
+    if(dest < 0 || dest >= gr->Vertices)
         return 0;
     gr->arestas[orig][gr->grau[orig]] = dest;
     gr->grau[orig]++;
@@ -61,7 +49,7 @@ void imprime_Grafo(Grafo *gr){
         return;
 
     int i, j;
-    for(i=0; i < gr->nro_vertices; i++){
+    for(i=0; i < gr->Vertices; i++){
         printf("%d: ", i);
         for(j=0; j < gr->grau[i]; j++){
             printf("|%d| ", gr->arestas[i][j]);
@@ -88,7 +76,7 @@ int procuraMenorDistancia(float *dist, int *visitado, int NV){
 
 void menorCaminho_Grafo(Grafo *gr, int ini, int *ant, float *dist){
     int i, cont, NV, ind, *visitado, vert;
-    cont = NV = gr->nro_vertices;
+    cont = NV = gr->Vertices;
     visitado = (int*) malloc(NV * sizeof(int));
     for(i=0; i < NV; i++){
         ant[i] = -1;
@@ -123,20 +111,20 @@ int main(){
     int opcao, inicio, destino;
     Grafo* gr = cria_Grafo(7, 2);
 
-    insereAresta(gr, 0, 1);
-    insereAresta(gr, 0, 3);
-    insereAresta(gr, 1, 0);
-    insereAresta(gr, 1, 2);
-    insereAresta(gr, 2, 1);
-    insereAresta(gr, 2, 6);
-    insereAresta(gr, 3, 0);
-    insereAresta(gr, 3, 4);
-    insereAresta(gr, 4, 3);
-    insereAresta(gr, 4, 5);
-    insereAresta(gr, 5, 4);
-    insereAresta(gr, 6, 2);
+    AddAresta(gr, 0, 1);
+    AddAresta(gr, 0, 3);
+    AddAresta(gr, 1, 0);
+    AddAresta(gr, 1, 2);
+    AddAresta(gr, 2, 1);
+    AddAresta(gr, 2, 6);
+    AddAresta(gr, 3, 0);
+    AddAresta(gr, 3, 4);
+    AddAresta(gr, 4, 3);
+    AddAresta(gr, 4, 5);
+    AddAresta(gr, 5, 4);
+    AddAresta(gr, 6, 2);
 do{
-		printf("\n\t0 - Sair\n\t1 - imprimir\n\t2 - Busca\n -----DIGITE A OPÇÃO DESEJADA-----\n");
+		printf("\n\t0 - Sair\n\t1 - imprimir\n\t2 - Busca\n -----DIGITE A OPÇÃO DESEJADA PARA O GRAFO:-----\n\t1 2 3 4 5 6 7\n\t_____________\n 1| 0 1 0 1 0 0 0\n 2| 1 0 1 0 0 0 0\n 3| 0 1 0 0 0 0 1\n 4| 1 0 0 0 1 0 0\n 5| 0 0 0 1 0 1 0\n 6| 0 0 0 0 1 0 0\n 7| 0 0 1 0 0 0 0\n");
 	    scanf("%d", &opcao);
 	
 		switch(opcao){
