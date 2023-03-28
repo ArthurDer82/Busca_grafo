@@ -58,15 +58,15 @@ void imprime_Grafo(Grafo *Ponteiro){
     }
 }
 
-int MenorDeslocamento(float *Espaço, int *visitado, int NV){
+int MenorDeslocamento(float *Espaco, int *visitado, int NV){
     int i, menor = -1, primeiro = 1;
     for(i=0; i < NV; i++){
-        if(Espaço[i] >= 0 && visitado[i] == 0){
+        if(Espaco[i] >= 0 && visitado[i] == 0){
             if(primeiro){
                 menor = i;
                 primeiro = 0;
             }else{
-                if(Espaço[menor] > Espaço[i])
+                if(Espaco[menor] > Espaco[i])
                     menor = i;
             }
         }
@@ -74,18 +74,18 @@ int MenorDeslocamento(float *Espaço, int *visitado, int NV){
     return menor;
 }
 
-void Caminho_Grafo(Grafo *Ponteiro, int ini, int *Anterior, float *Espaço){
+void Caminho_Grafo(Grafo *Ponteiro, int ini, int *Anterior, float *Espaco){
     int i, cont, NV, ind, *visitado, vert;
     cont = NV = Ponteiro->Vertices;
     visitado = (int*) malloc(NV * sizeof(int));
     for(i=0; i < NV; i++){
         Anterior[i] = -1;
-        Espaço[i] = -1;
+        Espaco[i] = -1;
         visitado[i] = 0;
     }
-    Espaço[ini] = 0;
+    Espaco[ini] = 0;
     while(cont > 0){
-        vert = MenorDeslocamento(Espaço, visitado, NV);
+        vert = MenorDeslocamento(Espaco, visitado, NV);
         if(vert == -1)
             break;
 
@@ -93,12 +93,12 @@ void Caminho_Grafo(Grafo *Ponteiro, int ini, int *Anterior, float *Espaço){
         cont--;
         for(i=0; i<Ponteiro->grau[vert]; i++){
             ind = Ponteiro->arestas[vert][i];
-            if(Espaço[ind] < 0){
-               Espaço[ind] = Espaço[vert] + 1;
+            if(Espaco[ind] < 0){
+               Espaco[ind] = Espaco[vert] + 1;
                Anterior[ind] = vert;
             }else{
-                if(Espaço[ind] > Espaço[vert] + 1){
-                    Espaço[ind] = Espaço[vert] + 1;
+                if(Espaco[ind] > Espaco[vert] + 1){
+                    Espaco[ind] = Espaco[vert] + 1;
                     Anterior[ind] = vert;
                 }
             }
@@ -139,9 +139,9 @@ do{
 		    printf("\n\t -----DIGITE O DESTINO DA BUSCA-----\n");
 		    scanf("%d", &destino);
 			int i,Anterior[7];
-            float Espaço[7];
-            Caminho_Grafo(Ponteiro, inicio, Anterior, Espaço);
-                printf("%d-> %f\n",destino,Anterior[destino],Espaço[destino]);
+            float Espaco[7];
+            Caminho_Grafo(Ponteiro, inicio, Anterior, Espaco);
+                printf("%d-> %f\n",destino,Anterior[destino],Espaco[destino]);
 			break;
 		default:
 			if(opcao != 0)
