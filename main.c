@@ -4,10 +4,10 @@
 typedef struct grafo Grafo;
 
 Grafo* cria_Grafo(int Vertices, int grau_max);
-int AddAresta(Grafo* gr, int orig, int dest);
-void menorCaminho_Grafo(Grafo *gr, int ini, int *antecessor, float *distancia);
+int AddAresta(Grafo* Ponteiro, int orig, int dest);
+void Caminho_Grafo(Grafo *Ponteiro, int ini, int *Antecessor, float *Distancia);
 
-void imprime_Grafo(Grafo *gr);
+void imprime_Grafo(Grafo *Ponteiro);
 
 struct grafo{
     int Vertices;
@@ -17,56 +17,56 @@ struct grafo{
 };
 
 Grafo* cria_Grafo(int Vertices, int grau_max){
-    Grafo *gr;
-    gr = (Grafo*) malloc(sizeof(struct grafo));
-    if(gr != NULL){
+    Grafo *Ponteiro;
+    Ponteiro = (Grafo*) malloc(sizeof(struct grafo));
+    if(Ponteiro != NULL){
         int i;
-        gr->Vertices = Vertices;
-        gr->grau_max = grau_max;
-        gr->grau = (int*) calloc(Vertices,sizeof(int));
+        Ponteiro->Vertices = Vertices;
+        Ponteiro->grau_max = grau_max;
+        Ponteiro->grau = (int*) calloc(Vertices,sizeof(int));
 
-        gr->arestas = (int**) malloc(Vertices * sizeof(int*));
+        Ponteiro->arestas = (int**) malloc(Vertices * sizeof(int*));
         for(i=0; i<Vertices; i++)
-            gr->arestas[i] = (int*) malloc(grau_max * sizeof(int));
+            Ponteiro->arestas[i] = (int*) malloc(grau_max * sizeof(int));
     }
-    return gr;
+    return Ponteiro;
 }
 
-int AddAresta(Grafo* gr, int orig, int dest){
-    if(gr == NULL)
+int AddAresta(Grafo* Ponteiro, int orig, int dest){
+    if(Ponteiro == NULL)
         return 0;
-    if(orig < 0 || orig >= gr->Vertices)
+    if(orig < 0 || orig >= Ponteiro->Vertices)
         return 0;
-    if(dest < 0 || dest >= gr->Vertices)
+    if(dest < 0 || dest >= Ponteiro->Vertices)
         return 0;
-    gr->arestas[orig][gr->grau[orig]] = dest;
-    gr->grau[orig]++;
+    Ponteiro->arestas[orig][Ponteiro->grau[orig]] = dest;
+    Ponteiro->grau[orig]++;
     return 1;
 }
 
-void imprime_Grafo(Grafo *gr){
-    if(gr == NULL)
+void imprime_Grafo(Grafo *Ponteiro){
+    if(Ponteiro == NULL)
         return;
 
     int i, j;
-    for(i=0; i < gr->Vertices; i++){
+    for(i=0; i < Ponteiro->Vertices; i++){
         printf("%d: ", i);
-        for(j=0; j < gr->grau[i]; j++){
-            printf("|%d| ", gr->arestas[i][j]);
+        for(j=0; j < Ponteiro->grau[i]; j++){
+            printf("|%d| ", Ponteiro->arestas[i][j]);
         }
         printf("\n");
     }
 }
 
-int procuraMenorDistancia(float *dist, int *visitado, int NV){
+int MenorDeslocamento(float *Espaço, int *visitado, int NV){
     int i, menor = -1, primeiro = 1;
     for(i=0; i < NV; i++){
-        if(dist[i] >= 0 && visitado[i] == 0){
+        if(Espaço[i] >= 0 && visitado[i] == 0){
             if(primeiro){
                 menor = i;
                 primeiro = 0;
             }else{
-                if(dist[menor] > dist[i])
+                if(Espaço[menor] > Espaço[i])
                     menor = i;
             }
         }
@@ -74,32 +74,32 @@ int procuraMenorDistancia(float *dist, int *visitado, int NV){
     return menor;
 }
 
-void menorCaminho_Grafo(Grafo *gr, int ini, int *ant, float *dist){
+void Caminho_Grafo(Grafo *Ponteiro, int ini, int *Anterior, float *Espaço){
     int i, cont, NV, ind, *visitado, vert;
-    cont = NV = gr->Vertices;
+    cont = NV = Ponteiro->Vertices;
     visitado = (int*) malloc(NV * sizeof(int));
     for(i=0; i < NV; i++){
-        ant[i] = -1;
-        dist[i] = -1;
+        Anterior[i] = -1;
+        Espaço[i] = -1;
         visitado[i] = 0;
     }
-    dist[ini] = 0;
+    Espaço[ini] = 0;
     while(cont > 0){
-        vert = procuraMenorDistancia(dist, visitado, NV);
+        vert = MenorDeslocamento(Espaço, visitado, NV);
         if(vert == -1)
             break;
 
         visitado[vert] = 1;
         cont--;
-        for(i=0; i<gr->grau[vert]; i++){
-            ind = gr->arestas[vert][i];
-            if(dist[ind] < 0){
-               dist[ind] = dist[vert] + 1;
-               ant[ind] = vert;
+        for(i=0; i<Ponteiro->grau[vert]; i++){
+            ind = Ponteiro->arestas[vert][i];
+            if(Espaço[ind] < 0){
+               Espaço[ind] = Espaço[vert] + 1;
+               Anterior[ind] = vert;
             }else{
-                if(dist[ind] > dist[vert] + 1){
-                    dist[ind] = dist[vert] + 1;
-                    ant[ind] = vert;
+                if(Espaço[ind] > Espaço[vert] + 1){
+                    Espaço[ind] = Espaço[vert] + 1;
+                    Anterior[ind] = vert;
                 }
             }
         }
@@ -109,27 +109,27 @@ void menorCaminho_Grafo(Grafo *gr, int ini, int *ant, float *dist){
 }
 int main(){
     int opcao, inicio, destino;
-    Grafo* gr = cria_Grafo(7, 2);
+    Grafo* Ponteiro = cria_Grafo(7, 2);
 
-    AddAresta(gr, 0, 1);
-    AddAresta(gr, 0, 3);
-    AddAresta(gr, 1, 0);
-    AddAresta(gr, 1, 2);
-    AddAresta(gr, 2, 1);
-    AddAresta(gr, 2, 6);
-    AddAresta(gr, 3, 0);
-    AddAresta(gr, 3, 4);
-    AddAresta(gr, 4, 3);
-    AddAresta(gr, 4, 5);
-    AddAresta(gr, 5, 4);
-    AddAresta(gr, 6, 2);
+    AddAresta(Ponteiro, 0, 1);
+    AddAresta(Ponteiro, 0, 3);
+    AddAresta(Ponteiro, 1, 0);
+    AddAresta(Ponteiro, 1, 2);
+    AddAresta(Ponteiro, 2, 1);
+    AddAresta(Ponteiro, 2, 6);
+    AddAresta(Ponteiro, 3, 0);
+    AddAresta(Ponteiro, 3, 4);
+    AddAresta(Ponteiro, 4, 3);
+    AddAresta(Ponteiro, 4, 5);
+    AddAresta(Ponteiro, 5, 4);
+    AddAresta(Ponteiro, 6, 2);
 do{
 		printf("\n\t0 - Sair\n\t1 - imprimir\n\t2 - Busca\n -----DIGITE A OPÇÃO DESEJADA PARA O GRAFO:-----\n    1 2 3 4 5 6 7\n    _____________\n 1| 0 1 0 1 0 0 0\n 2| 1 0 1 0 0 0 0\n 3| 0 1 0 0 0 0 1\n 4| 1 0 0 0 1 0 0\n 5| 0 0 0 1 0 1 0\n 6| 0 0 0 0 1 0 0\n 7| 0 0 1 0 0 0 0\n");
 	    scanf("%d", &opcao);
 	
 		switch(opcao){
 		case 1:
-			imprime_Grafo(gr);
+			imprime_Grafo(Ponteiro);
             printf("\nBusca \n");
             int vis[7];
 			break;
@@ -138,10 +138,10 @@ do{
 		    scanf("%d", &inicio);
 		    printf("\n\t -----DIGITE O DESTINO DA BUSCA-----\n");
 		    scanf("%d", &destino);
-			int i,ant[7];
-            float dist[7];
-            menorCaminho_Grafo(gr, inicio, ant, dist);
-                printf("%d-> %f\n",destino,ant[destino],dist[destino]);
+			int i,Anterior[7];
+            float Espaço[7];
+            Caminho_Grafo(Ponteiro, inicio, Anterior, Espaço);
+                printf("%d-> %f\n",destino,Anterior[destino],Espaço[destino]);
 			break;
 		default:
 			if(opcao != 0)
