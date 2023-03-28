@@ -154,9 +154,6 @@ do{
             float dist[7];
             menorCaminho_Grafo(gr, inicio, ant, dist);
                 printf("%d-> %f\n",destino,ant[destino],dist[destino]);
-            libera_Grafo(gr);
-            system("pause");
-            return 0;
 			break;
 		default:
 			if(opcao != 0)
