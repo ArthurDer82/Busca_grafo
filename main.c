@@ -141,7 +141,7 @@ do{
 			int i,Anterior[7];
             float Espaco[7];
             Caminho_Grafo(Ponteiro, inicio, Anterior, Espaco);
-                printf("%d-> %f\n",destino,Anterior[destino],Espaco[destino]);
+                printf("O VALOR DA DISTANCIA PERCORRIDA FOI => %f\n",destino,Anterior[destino],Espaco[destino]);
 			break;
 		default:
 			if(opcao != 0)
