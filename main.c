@@ -142,6 +142,35 @@ do{
             float Espaco[7];
             Caminho_Grafo(Ponteiro, inicio, Anterior, Espaco);
                 printf("O VALOR DA DISTANCIA PERCORRIDA FOI => %f\n",destino,Anterior[destino],Espaco[destino]);
+                printf("O TRAJETO PERCORRIDO FOI:\n |%d|", inicio);
+                if(destino,Anterior[destino],Espaco[destino] == 6){
+                    printf(" => |%d|", Anterior[Anterior[Anterior[Anterior[Anterior[destino]]]]]);
+                    printf(" => |%d|", Anterior[Anterior[Anterior[Anterior[destino]]]]);
+                    printf(" => |%d|", Anterior[Anterior[Anterior[destino]]]);
+                    printf(" => |%d|", Anterior[Anterior[destino]]);
+                    printf(" => |%d|", Anterior[destino]);
+                }
+                if(destino,Anterior[destino],Espaco[destino] == 5){
+                    printf(" => |%d|", Anterior[Anterior[Anterior[Anterior[destino]]]]);
+                    printf(" => |%d|", Anterior[Anterior[Anterior[destino]]]);
+                    printf(" => |%d|", Anterior[Anterior[destino]]);
+                    printf(" => |%d|", Anterior[destino]);
+                }
+                if(destino,Anterior[destino],Espaco[destino] == 4){
+                    printf(" => |%d|", Anterior[Anterior[Anterior[destino]]]);
+                    printf(" => |%d|", Anterior[Anterior[destino]]);
+                    printf(" => |%d|", Anterior[destino]);
+                }
+                if(destino,Anterior[destino],Espaco[destino] == 3){
+                    printf(" => |%d|", Anterior[Anterior[destino]]);
+                    printf(" => |%d|", Anterior[destino]);
+                }
+                if(destino,Anterior[destino],Espaco[destino] == 2){
+                    printf(" => |%d|", Anterior[destino]);
+                }
+                if(inicio != destino){
+                    printf(" => |%d|",destino);
+                }
 			break;
 		default:
 			if(opcao != 0)
